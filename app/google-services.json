@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "997269457282",
+    "project_id": "link-library-cb786",
+    "storage_bucket": "link-library-cb786.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997269457282:android:dfda969505a6b4a4e2e79b",
+        "android_client_info": {
+          "package_name": "com.example.linklibrary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997269457282-ea1qtq2kjj8uluogn5hrnco5fq04e9sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKuDXei8uONZaWdynaUyg5eTbxOBPfZjo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997269457282-ea1qtq2kjj8uluogn5hrnco5fq04e9sl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
