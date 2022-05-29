@@ -91,9 +91,9 @@ android {
      implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
      //SSJetPackComposeProgressButton
-     implementation 'com.github.User:Repo:Tag'
-         implementation 'com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.7'
 
+     implementation 'com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.5'
+     implementation 'com.github.SimformSolutionsPvtLtd:SSJetpackComposeSwipeableView:1.0.1'
 
 
      implementation 'androidx.core:core-ktx:1.7.0'

@@ -9,7 +9,8 @@ enum class AppScreens {
     LoginScreen,
     ActionChoice,
     UpdateScreen,
-    WebViewScreen
+    WebViewScreen,
+    InfoScreen
     ;
     companion object{
         fun fromRoute(route:String?):AppScreens=when(route?.substringBefore("/")){
@@ -21,6 +22,7 @@ enum class AppScreens {
             UpdateScreen.name -> UpdateScreen
            WebViewScreen.name -> WebViewScreen
             ActionChoice.name ->ActionChoice
+            InfoScreen.name ->InfoScreen
             null -> HomeScreen
             else -> throw IllegalArgumentException("Route $route is not recognized")
         }

@@ -13,8 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +23,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,6 +40,13 @@ import com.example.linklibrary.R
 import com.example.linklibrary.model.MBook
 import com.example.linklibrary.navigation.AppScreens
 import com.google.firebase.auth.FirebaseAuth
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonState
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonType
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSCustomLoadingEffect
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSJetPackComposeProgressButton
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.six
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.ten
+import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.two
 
 @Composable
 fun AppLogo(modifier: Modifier = Modifier) {
@@ -94,27 +101,34 @@ fun CreateImageProfile(modifier: Modifier = Modifier) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun NoteRow(
     modifier: Modifier = Modifier,
-    note: String,
-    title:String,
-    list: List<MBook>,
-    onNoteClicked: (String) -> Unit
+    book:MBook=MBook(title = "", notes = ""),
+    note: String="",
+    title:String="",
+    onNoteClicked: (MBook) -> Unit
 ) {
+
+
+
+
     Surface(
         modifier
             .padding(4.dp)
             .clip(RoundedCornerShape(topEnd = 33.dp, bottomStart = 33.dp))
             .fillMaxWidth(),
+
         color = Color(0xFFDFE6EB),
         elevation = 6.dp
     ) {
         Column(modifier
             .clickable {
-                onNoteClicked(note)
+                onNoteClicked(book)
             }
             .padding(horizontal = 14.dp, vertical = 6.dp),
+
             horizontalAlignment = Alignment.Start) {
             Text(
                 text = "section: $title",
@@ -142,15 +156,7 @@ fun LinkLibraryAppBar(
 
     TopAppBar(title = {
         Row(verticalAlignment = Alignment.CenterVertically){
-            if (showProfile) {
-                Icon(imageVector = Icons.Default.Favorite,
-                    contentDescription = "Logo Icon",
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .scale(0.9f)
-                )
 
-            }
             if (icon != null) {
                 Icon(imageVector = icon, contentDescription = "arrow back",
                     tint = Color.Red.copy(alpha = 0.7f),
@@ -177,7 +183,6 @@ fun LinkLibraryAppBar(
                 if (showProfile) Row() {
                     Icon(imageVector = Icons.Filled.Logout ,
                         contentDescription = "Logout" ,
-                        // tint = Color.Green.copy(alpha = 0.4f)
                     )
                 }else Box {}
 
@@ -188,6 +193,24 @@ fun LinkLibraryAppBar(
         backgroundColor = Color.Transparent,
         elevation = 0.dp)
 
+}
+
+@Composable
+fun TextInput(
+    modifier: Modifier = Modifier,
+   textState: MutableState<String>,
+    labelId: String = "title",
+    enabled: Boolean = true,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+){
+    InputField(modifier = modifier,
+        valueState = textState,
+        labelId = labelId,
+        enabled = enabled,
+        keyboardType = KeyboardType.Text,
+        imeAction = imeAction,
+        onAction = onAction)
 }
 
 @Composable
@@ -283,15 +306,12 @@ fun PasswordVisibility(passwordVisibility: MutableState<Boolean>) {
 
 @Composable
 fun ChoiceButton(
+    modifier:Modifier= Modifier
+        .clip(RoundedCornerShape(5))
+        .size(width = 175.dp, height = 80.dp),
     backgroundColor:Color= Color.Green.copy(alpha = 0.09f),
     contentColor:Color=Color.White,
     onClick:() -> Unit,
-    navController: NavController,
-    modifier: Modifier= Modifier
-        .clip(RoundedCornerShape(5))
-        .size(width = 175.dp, height = 80.dp),
-
-
     text:String
 
 ) {
@@ -313,21 +333,41 @@ fun ChoiceButton(
     }
 
 }
+
+
 @Composable
-fun ImageButton(
-
+fun ComponentButton(
+    navController: NavController,
+  onClick: () -> Unit={},
+    text:String=""
 ){
+    val submitButtonState by remember { mutableStateOf(SSButtonState.IDLE) }
+    SSJetPackComposeProgressButton(
+        type = SSButtonType.CUSTOM,
+        width = 300.dp,
+        height = 50.dp,
+        onClick = {onClick.invoke()},
 
-
-    Image(
-        painter = painterResource(id = R.drawable.checklist_background),
-        contentDescription = "profile image",
-
+        assetColor = Color.Red,
+        buttonState = submitButtonState,
+        successIconPainter = painterResource(id = R.drawable.custom_success),
+        failureIconPainter = painterResource(id = R.drawable.custom_fail),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
+        padding = PaddingValues(six.dp),
+        text = text,
+        textModifier = Modifier.padding(ten.dp),
+        fontWeight = FontWeight.Bold,
+        leftImagePainter = painterResource(id = R.drawable.simform_logo),
+        buttonBorderStroke = BorderStroke(two.dp, colorResource(id = R.color.black)),
+        customLoadingIconPainter = painterResource(id = R.drawable.simform_logo),
+        customLoadingEffect = SSCustomLoadingEffect(
+            rotation = false,
+            zoomInOut = true,
+            colorChanger = false
         )
-    Image(
-        painter = BitmapPainter(ImageBitmap.imageResource(R.drawable.checklist_background)),
-        contentDescription = "Зимний лес"
     )
-
-
 }
+
+
+
+

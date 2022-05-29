@@ -19,7 +19,7 @@ class HomeScreenViewModel @Inject constructor(private val repository: FireReposi
     val dataFromDb: MutableState<DataOrException<List<MBook>, Boolean, Exception>>
             = mutableStateOf(DataOrException(listOf(), true,Exception("")))
 
-    private fun getAllBooksFromDatabase() {
+   fun getAllBooksFromDatabase() {
         viewModelScope.launch {
             dataFromDb.value.loading = true
             dataFromDb.value = repository.getAllBooksFromDatabase()
@@ -33,4 +33,9 @@ companion object{
     var linkList= mutableStateOf(listOf<MBook>())
      var link= mutableStateOf(String())
 }
+    fun delNote(note:MBook){
+        viewModelScope.launch{
+            repository.deleteFromFirebase(note)
+        }
+    }
 }
